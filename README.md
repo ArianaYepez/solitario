@@ -1,0 +1,2 @@
+# solitario
+actividad1FrontEnd
