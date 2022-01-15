@@ -69,5 +69,15 @@ img.logo{
 	
 		/*float: right;*/
 		width: 20%;
-	
+}
+
+img.baraja{
+	position: absolute;
+	left: 0;
+	height: 100%;
+}
+
+img.baraja:hover{
+	transform: scale(1.1);
+	cursor: pointer;
 }

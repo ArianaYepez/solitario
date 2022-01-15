@@ -16,12 +16,12 @@ let numeros = [9, 10, 11, 12];
 let paso = 5;
 
 // Tapetes				
-let tapete_inicial   = document.getElementById("inicial");
-let tapete_sobrantes = document.getElementById("sobrantes");
-let tapete_receptor1 = document.getElementById("receptor1");
-let tapete_receptor2 = document.getElementById("receptor2");
-let tapete_receptor3 = document.getElementById("receptor3");
-let tapete_receptor4 = document.getElementById("receptor4");
+let tapete_inicial;
+let tapete_sobrantes;
+let tapete_receptor1;
+let tapete_receptor2;
+let tapete_receptor3;
+let tapete_receptor4;
 
 // Mazos
 let mazo_inicial   = [];
@@ -51,29 +51,41 @@ let temporizador = null; // manejador del temporizador
 // Rutina asociada a boton reset: comenzar_juego
 window.onload = init
 function init(){
-	document.getElementById("reset").onclick = comenzar_juego;
+	cargarEtiquetasHtml();
+	comenzar_juego();
 }
 
-// El juego arranca ya al cargar la página: no se espera a reiniciar
-comenzar_juego();
+function cargarEtiquetasHtml(){	
 
-// Desarrollo del comienzo de juego
-function comenzar_juego() {
-	/* Crear baraja, es decir crear el mazo_inicial. Este será un array cuyos 
-	elementos serán elementos HTML <img>, siendo cada uno de ellos una carta.
-	Sugerencia: en dos bucles for, bárranse los "figuras" y los "numeros", formando
-	oportunamente el nombre del fichero png que contiene a la carta (recuérdese poner
-	el path correcto en la URL asociada al atributo src de <img>). Una vez creado
-	el elemento img, inclúyase como elemento del array mazo_inicial. 
-	*/
+	document.getElementById("reset").onclick = reiniciar;
+	//Tapetes
+	tapete_inicial  = document.getElementById("inicial");
+	tapete_sobrantes = document.getElementById("sobrantes");
+	tapete_receptor1 = document.getElementById("receptor1");
+	tapete_receptor2 = document.getElementById("receptor2");
+	tapete_receptor3 = document.getElementById("receptor3");
+	tapete_receptor4 = document.getElementById("receptor4");
+}
 
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/	
-    figuras.forEach(figura => {
+function reiniciar(){
+	location.reload();
+}
+
+function cargarMazoInicial(mazo){
+	mazo.length=0;
+	figuras.forEach(figura => {
 		numeros.forEach(numero => {
 			let baraja = {numero: numero,...figura}
-			mazo_inicial.push(baraja);
+			mazo.push(baraja);
 		});
 	});
+}
+
+
+
+function comenzar_juego() {
+	
+    cargarMazoInicial(mazo_inicial);
 	
 	// Barajar
 	barajar(mazo_inicial);
@@ -136,26 +148,9 @@ function arrancar_tiempo(){
     hms(); // Primera visualización 00:00:00
 	temporizador = setInterval(hms, 1000);
     	
-} // arrancar_tiempo
+}
 
-
-/**
-	Si mazo es un array de elementos <img>, en esta rutina debe ser
-	reordenado aleatoriamente. Al ser un array un objeto, se pasa
-	por referencia, de modo que si se altera el orden de dicho array
-	dentro de la rutina, esto aparecerá reflejado fuera de la misma.
-	Para reordenar el array puede emplearse el siguiente pseudo código:
-
-	- Recorramos con i todos los elementos del array
-		- Sea j un indice cuyo valor sea un número aleatorio comprendido 
-			entre 0 y la longitud del array menos uno. Este valor aleatorio
-			puede conseguirse, por ejemplo con la instrucción JavaScript
-				Math.floor( Math.random() * LONGITUD_DEL_ARRAY );
-		- Se intercambia el contenido de la posición i-ésima con el de la j-ésima
-
-*/
 function barajar(mazo) {
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
 	mazo.forEach((baraja, i)=>{
 		let j = Math.floor( Math.random() * mazo.length);
 		mazo[i]=mazo[j];
@@ -173,8 +168,27 @@ function barajar(mazo) {
 	Al final se debe ajustar el contador de cartas a la cantidad oportuna
 */
 function cargar_tapete_inicial(mazo) {
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/	
-} // cargar_tapete_inicial
+	let gap = 4;
+	let altoContenedorInicial = window.getComputedStyle(tapete_inicial).height.replace(/\D/g, "");;
+	let altoBaraja = `${altoContenedorInicial-(mazo.length*gap)}px`;
+
+	mazo.forEach((baraja, index) => {
+		let nombre_baraja = `${baraja.numero}-${baraja.figura}`;
+		let img = document.createElement("img");
+		img.classList.add("baraja");
+		img.classList.add("inicial");
+		img.id = nombre_baraja;
+		img.setAttribute("src",`./imagenes/baraja/${baraja.numero}-${baraja.figura}.png`);
+		img.setAttribute("data-figura", baraja.figura);
+		img.setAttribute("data-numero", baraja.numero);
+		img.setAttribute("data-color", baraja.color);
+		img.setAttribute("alt", nombre_baraja);
+		img.style.left= `${index*gap}px`;
+		img.style.top= `${index*gap}px`;
+		img.style.height=altoBaraja;
+		tapete_inicial.appendChild(img);
+	});
+} 
 
 
 /**
