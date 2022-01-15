@@ -32,17 +32,17 @@ let mazo_receptor3 = [];
 let mazo_receptor4 = [];
 
 // Contadores de cartas
-let cont_inicial     = document.getElementById("cont_inicial");
-let cont_sobrantes   = document.getElementById("cont_sobrantes");
-let cont_receptor1   = document.getElementById("cont_receptor1");
-let cont_receptor2   = document.getElementById("cont_receptor2");
-let cont_receptor3   = document.getElementById("cont_receptor3");
-let cont_receptor4   = document.getElementById("cont_receptor4");
-let cont_movimientos = document.getElementById("cont_movimientos");
+let cont_inicial;
+let cont_sobrantes;
+let cont_receptor1;
+let cont_receptor2;
+let cont_receptor3;
+let cont_receptor4;
+let cont_movimientos;
 
 // Tiempo
-let cont_tiempo  = document.getElementById("cont_tiempo"); // span cuenta tiempo
-let segundos 	 = 0;    // cuenta de segundos
+let cont_tiempo; // span cuenta tiempo
+let segundos = 0;    // cuenta de segundos
 let temporizador = null; // manejador del temporizador
 
 /***** FIN DECLARACIÓN DE VARIABLES GLOBALES *****/
@@ -58,13 +58,28 @@ function init(){
 function cargarEtiquetasHtml(){	
 
 	document.getElementById("reset").onclick = reiniciar;
+
+
 	//Tapetes
-	tapete_inicial  = document.getElementById("inicial");
+	tapete_inicial = document.getElementById("inicial");
 	tapete_sobrantes = document.getElementById("sobrantes");
 	tapete_receptor1 = document.getElementById("receptor1");
 	tapete_receptor2 = document.getElementById("receptor2");
 	tapete_receptor3 = document.getElementById("receptor3");
 	tapete_receptor4 = document.getElementById("receptor4");
+
+	//Contadores
+	cont_inicial = document.getElementById("contador_inicial");
+	cont_sobrantes = document.getElementById("contador_sobrantes");
+	cont_receptor1 = document.getElementById("contador_receptor1");
+	cont_receptor2 = document.getElementById("contador_receptor2");
+	cont_receptor3 = document.getElementById("contador_receptor3");
+	cont_receptor4 = document.getElementById("contador_receptor4");
+	cont_movimientos = document.getElementById("contador_movimientos");
+
+	//Tiempo
+	cont_tiempo  = document.getElementById("contador_tiempo")
+
 }
 
 function reiniciar(){
@@ -211,5 +226,5 @@ function dec_contador(contador){
 	valor especificado
 */
 function set_contador(contador, valor) {
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
+	contador.textContent = valor;
 } // set_contador
