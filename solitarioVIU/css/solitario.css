@@ -9,6 +9,33 @@
 /* Todos los contadores estarán ubicados en la parte inferior 
    derecha (position absolute) de los respectivos tapetes (position relative).
 */
+.body{
+	background: url("../imagenes/pattern.png");
+}
+
+.card-transparente{
+	background: rgba(255, 255, 255, 0.6);
+	backdrop-filter: blur(4px);
+	border-radius: 1rem;
+	border: 1px solid lightgray;
+	box-shadow: 4px 4px 8px black;
+}
+
+.card-header{
+	background-color: whitesmoke;
+	border-radius: 1rem 1rem 0 0 !important;
+}
+
+.card-footer{
+	text-align: center;
+	background-color: whitesmoke;
+	border-radius:  0 0 1rem 1rem !important;
+}
+
+.container{
+	padding: 1rem;
+}
+
 .contador {
 	position: absolute;
 	bottom: 0px;
@@ -39,6 +66,8 @@ div#mesa{
 div.tapete{
 	display: inline-block;
 	position: relative;
+	border-radius: 1rem;
+	border: 1px solid whitesmoke;
 	margin: 10px;
 }
 
@@ -46,7 +75,7 @@ div.tapete{
 div.tapete#inicial{
 	width: 340px;
 	height: 340px;			
-	background-color: lightgrey;
+	background-color: rgba(255, 255, 255,0.4);
 }
 
 /* Dimensiones para todos los tapetes salvo el inicial */
@@ -57,12 +86,12 @@ div.tapete:not(#inicial){
 
 /* Color de fondo para el tapete de las cartas sobrantes */
 div.tapete#sobrantes{
-	background-color: lightblue;
+	background-color: rgba(20, 228, 255, 0.4);
 }
 
 /* Color de fondo de los tapetes receptores */
 div.tapete.receptor{
-	background-color: lightgreen;
+	background-color: rgba(95, 255, 47, 0.6);
 }
 
 img.logo{
@@ -75,9 +104,15 @@ img.baraja{
 	position: absolute;
 	left: 0;
 	height: 100%;
+	border-radius: 2rem;
 }
 
 img.baraja:hover{
-	transform: scale(1.1);
+	transform: scale(1.05);
 	cursor: pointer;
+	box-shadow: 1px 1px 8px black;
+}
+
+.marcadores{
+	text-shadow: 4px 4px 16px whitesmoke;
 }
