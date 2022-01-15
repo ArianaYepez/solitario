@@ -53,8 +53,9 @@ window.onload = init
 function init(){
 	document.getElementById("reset").onclick = comenzar_juego;
 }
+
 // El juego arranca ya al cargar la página: no se espera a reiniciar
-/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
+comenzar_juego();
 
 // Desarrollo del comienzo de juego
 function comenzar_juego() {
@@ -154,8 +155,13 @@ function arrancar_tiempo(){
 
 */
 function barajar(mazo) {
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/	
-} // barajar
+	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
+	mazo.forEach((baraja, i)=>{
+		let j = Math.floor( Math.random() * mazo.length);
+		mazo[i]=mazo[j];
+		mazo[j]=baraja;
+	});
+}
 
 
 
