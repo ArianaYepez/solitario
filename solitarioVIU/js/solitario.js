@@ -1,10 +1,15 @@
 /***** INICIO DECLARACIÓN DE VARIABLES GLOBALES *****/
 
-// Array de palos
-let palos = ["viu", "cua", "hex", "cir"];
+// Array de figuras
+let figuras = [
+	{figura:"viu",color:"naranja"}, 
+	{figura:"cua",color:"naranja"},
+	{figura:"hex",color:"gris"},
+	{figura:"cir",color:"gris"}
+];
 // Array de número de cartas
 //let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-// En las pruebas iniciales solo se trabajará con cuatro cartas por palo:
+// En las pruebas iniciales solo se trabajará con cuatro cartas por figura:
 let numeros = [9, 10, 11, 12];
 
 // paso (top y left) en pixeles de una carta a la siguiente en un mazo
@@ -44,8 +49,10 @@ let temporizador = null; // manejador del temporizador
 
  
 // Rutina asociada a boton reset: comenzar_juego
-document.getElementById("reset").onclick = comenzar_juego;
-
+window.onload = init
+function init(){
+	document.getElementById("reset").onclick = comenzar_juego;
+}
 // El juego arranca ya al cargar la página: no se espera a reiniciar
 /*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
 
@@ -53,14 +60,19 @@ document.getElementById("reset").onclick = comenzar_juego;
 function comenzar_juego() {
 	/* Crear baraja, es decir crear el mazo_inicial. Este será un array cuyos 
 	elementos serán elementos HTML <img>, siendo cada uno de ellos una carta.
-	Sugerencia: en dos bucles for, bárranse los "palos" y los "numeros", formando
+	Sugerencia: en dos bucles for, bárranse los "figuras" y los "numeros", formando
 	oportunamente el nombre del fichero png que contiene a la carta (recuérdese poner
 	el path correcto en la URL asociada al atributo src de <img>). Una vez creado
 	el elemento img, inclúyase como elemento del array mazo_inicial. 
 	*/
 
 	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/	
-    
+    figuras.forEach(figura => {
+		numeros.forEach(numero => {
+			let baraja = {numero: numero,...figura}
+			mazo_inicial.push(baraja);
+		});
+	});
 	
 	// Barajar
 	barajar(mazo_inicial);
