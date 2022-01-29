@@ -1,22 +1,27 @@
 /***** INICIO DECLARACIÓN DE VARIABLES GLOBALES *****/
 
-// Array de palos
-let palos = ["viu", "cua", "hex", "cir"];
+// Array de figuras
+let figuras = [
+	{figura:"viu",color:"naranja"}, 
+	{figura:"cua",color:"naranja"},
+	{figura:"hex",color:"gris"},
+	{figura:"cir",color:"gris"}
+];
 // Array de número de cartas
 //let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-// En las pruebas iniciales solo se trabajará con cuatro cartas por palo:
+// En las pruebas iniciales solo se trabajará con cuatro cartas por figura:
 let numeros = [9, 10, 11, 12];
 
 // paso (top y left) en pixeles de una carta a la siguiente en un mazo
 let paso = 5;
 
 // Tapetes				
-let tapete_inicial   = document.getElementById("inicial");
-let tapete_sobrantes = document.getElementById("sobrantes");
-let tapete_receptor1 = document.getElementById("receptor1");
-let tapete_receptor2 = document.getElementById("receptor2");
-let tapete_receptor3 = document.getElementById("receptor3");
-let tapete_receptor4 = document.getElementById("receptor4");
+let tapete_inicial;
+let tapete_sobrantes;
+let tapete_receptor1;
+let tapete_receptor2;
+let tapete_receptor3;
+let tapete_receptor4;
 
 // Mazos
 let mazo_inicial   = [];
@@ -27,40 +32,75 @@ let mazo_receptor3 = [];
 let mazo_receptor4 = [];
 
 // Contadores de cartas
-let cont_inicial     = document.getElementById("cont_inicial");
-let cont_sobrantes   = document.getElementById("cont_sobrantes");
-let cont_receptor1   = document.getElementById("cont_receptor1");
-let cont_receptor2   = document.getElementById("cont_receptor2");
-let cont_receptor3   = document.getElementById("cont_receptor3");
-let cont_receptor4   = document.getElementById("cont_receptor4");
-let cont_movimientos = document.getElementById("cont_movimientos");
+let cont_inicial;
+let cont_sobrantes;
+let cont_receptor1;
+let cont_receptor2;
+let cont_receptor3;
+let cont_receptor4;
+let cont_movimientos;
 
 // Tiempo
-let cont_tiempo  = document.getElementById("cont_tiempo"); // span cuenta tiempo
-let segundos 	 = 0;    // cuenta de segundos
+let cont_tiempo; // span cuenta tiempo
+let segundos = 0;    // cuenta de segundos
 let temporizador = null; // manejador del temporizador
 
 /***** FIN DECLARACIÓN DE VARIABLES GLOBALES *****/
 
  
 // Rutina asociada a boton reset: comenzar_juego
-document.getElementById("reset").onclick = comenzar_juego;
+window.onload = init
+function init(){
+	cargarEtiquetasHtml();
+	comenzar_juego();
+}
 
-// El juego arranca ya al cargar la página: no se espera a reiniciar
-/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
+function cargarEtiquetasHtml(){	
 
-// Desarrollo del comienzo de juego
+	document.getElementById("reset").onclick = reiniciar;
+
+
+	//Tapetes
+	tapete_inicial = document.getElementById("inicial");
+	tapete_sobrantes = document.getElementById("sobrantes");
+	tapete_receptor1 = document.getElementById("receptor1");
+	tapete_receptor2 = document.getElementById("receptor2");
+	tapete_receptor3 = document.getElementById("receptor3");
+	tapete_receptor4 = document.getElementById("receptor4");
+
+	//Contadores
+	cont_inicial = document.getElementById("contador_inicial");
+	cont_sobrantes = document.getElementById("contador_sobrantes");
+	cont_receptor1 = document.getElementById("contador_receptor1");
+	cont_receptor2 = document.getElementById("contador_receptor2");
+	cont_receptor3 = document.getElementById("contador_receptor3");
+	cont_receptor4 = document.getElementById("contador_receptor4");
+	cont_movimientos = document.getElementById("contador_movimientos");
+
+	//Tiempo
+	cont_tiempo  = document.getElementById("contador_tiempo")
+
+}
+
+function reiniciar(){
+	location.reload();
+}
+
+function cargarMazoInicial(mazo){
+	mazo.length=0;
+	figuras.forEach(figura => {
+		numeros.forEach(numero => {
+			let baraja = {numero: numero,...figura}
+			mazo.push(baraja);
+		});
+	});
+}
+
+
+
 function comenzar_juego() {
-	/* Crear baraja, es decir crear el mazo_inicial. Este será un array cuyos 
-	elementos serán elementos HTML <img>, siendo cada uno de ellos una carta.
-	Sugerencia: en dos bucles for, bárranse los "palos" y los "numeros", formando
-	oportunamente el nombre del fichero png que contiene a la carta (recuérdese poner
-	el path correcto en la URL asociada al atributo src de <img>). Una vez creado
-	el elemento img, inclúyase como elemento del array mazo_inicial. 
-	*/
-
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/	
-    
+	
+    cargarMazoInicial(mazo_inicial);
 	
 	// Barajar
 	barajar(mazo_inicial);
@@ -123,27 +163,15 @@ function arrancar_tiempo(){
     hms(); // Primera visualización 00:00:00
 	temporizador = setInterval(hms, 1000);
     	
-} // arrancar_tiempo
+}
 
-
-/**
-	Si mazo es un array de elementos <img>, en esta rutina debe ser
-	reordenado aleatoriamente. Al ser un array un objeto, se pasa
-	por referencia, de modo que si se altera el orden de dicho array
-	dentro de la rutina, esto aparecerá reflejado fuera de la misma.
-	Para reordenar el array puede emplearse el siguiente pseudo código:
-
-	- Recorramos con i todos los elementos del array
-		- Sea j un indice cuyo valor sea un número aleatorio comprendido 
-			entre 0 y la longitud del array menos uno. Este valor aleatorio
-			puede conseguirse, por ejemplo con la instrucción JavaScript
-				Math.floor( Math.random() * LONGITUD_DEL_ARRAY );
-		- Se intercambia el contenido de la posición i-ésima con el de la j-ésima
-
-*/
 function barajar(mazo) {
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/	
-} // barajar
+	mazo.forEach((baraja, i)=>{
+		let j = Math.floor( Math.random() * mazo.length);
+		mazo[i]=mazo[j];
+		mazo[j]=baraja;
+	});
+}
 
 
 
@@ -155,8 +183,27 @@ function barajar(mazo) {
 	Al final se debe ajustar el contador de cartas a la cantidad oportuna
 */
 function cargar_tapete_inicial(mazo) {
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/	
-} // cargar_tapete_inicial
+	let gap = 4;
+	let altoContenedorInicial = window.getComputedStyle(tapete_inicial).height.replace(/\D/g, "");;
+	let altoBaraja = `${altoContenedorInicial-(mazo.length*gap)}px`;
+
+	mazo.forEach((baraja, index) => {
+		let nombre_baraja = `${baraja.numero}-${baraja.figura}`;
+		let img = document.createElement("img");
+		img.classList.add("baraja");
+		img.classList.add("inicial");
+		img.id = nombre_baraja;
+		img.setAttribute("src",`./imagenes/baraja/${baraja.numero}-${baraja.figura}.png`);
+		img.setAttribute("data-figura", baraja.figura);
+		img.setAttribute("data-numero", baraja.numero);
+		img.setAttribute("data-color", baraja.color);
+		img.setAttribute("alt", nombre_baraja);
+		img.style.left= `${index*gap}px`;
+		img.style.top= `${index*gap}px`;
+		img.style.height=altoBaraja;
+		tapete_inicial.appendChild(img);
+	});
+} 
 
 
 /**
@@ -179,5 +226,5 @@ function dec_contador(contador){
 	valor especificado
 */
 function set_contador(contador, valor) {
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
+	contador.textContent = valor;
 } // set_contador
