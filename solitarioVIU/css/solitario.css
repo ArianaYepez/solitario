@@ -69,6 +69,7 @@ div.tapete{
 	border-radius: 1rem;
 	border: 1px solid whitesmoke;
 	margin: 10px;
+	z-index: 2;
 }
 
 /* Dimensiones y color de fondo para el tapete inicial */
@@ -107,9 +108,21 @@ img.baraja{
 	border-radius: 2rem;
 }
 
-img.baraja:hover{
+img.baraja.colocada{
+	left: 0 !important;
+	top: 0 !important;
+	height: 100% !important;
+	border-radius: 1rem;
+	cursor: not-allowed;
+	z-index: 1;
+}
+
+img.baraja.draggable{
+	cursor: move;
+}
+
+img.baraja.inicial:hover{
 	transform: scale(1.05);
-	cursor: pointer;
 	box-shadow: 1px 1px 8px black;
 }
 

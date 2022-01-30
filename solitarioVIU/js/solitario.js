@@ -2,10 +2,10 @@
 
 // Array de figuras
 let figuras = [
-	{figura:"viu",color:"naranja"}, 
-	{figura:"cua",color:"naranja"},
-	{figura:"hex",color:"gris"},
-	{figura:"cir",color:"gris"}
+	{ figura: "viu", color: "naranja" },
+	{ figura: "cua", color: "naranja" },
+	{ figura: "hex", color: "gris" },
+	{ figura: "cir", color: "gris" }
 ];
 // Array de número de cartas
 //let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -24,7 +24,7 @@ let tapete_receptor3;
 let tapete_receptor4;
 
 // Mazos
-let mazo_inicial   = [];
+let mazo_inicial = [];
 let mazo_sobrantes = [];
 let mazo_receptor1 = [];
 let mazo_receptor2 = [];
@@ -47,15 +47,15 @@ let temporizador = null; // manejador del temporizador
 
 /***** FIN DECLARACIÓN DE VARIABLES GLOBALES *****/
 
- 
+
 // Rutina asociada a boton reset: comenzar_juego
 window.onload = init
-function init(){
+function init() {
 	cargarEtiquetasHtml();
 	comenzar_juego();
 }
 
-function cargarEtiquetasHtml(){	
+function cargarEtiquetasHtml() {
 
 	document.getElementById("reset").onclick = reiniciar;
 
@@ -78,19 +78,19 @@ function cargarEtiquetasHtml(){
 	cont_movimientos = document.getElementById("contador_movimientos");
 
 	//Tiempo
-	cont_tiempo  = document.getElementById("contador_tiempo")
+	cont_tiempo = document.getElementById("contador_tiempo")
 
 }
 
-function reiniciar(){
+function reiniciar() {
 	location.reload();
 }
 
-function cargarMazoInicial(mazo){
-	mazo.length=0;
+function cargarMazoInicial(mazo) {
+	mazo.length = 0;
 	figuras.forEach(figura => {
 		numeros.forEach(numero => {
-			let baraja = {numero: numero,...figura}
+			let baraja = { numero: numero, ...figura }
 			mazo.push(baraja);
 		});
 	});
@@ -99,9 +99,9 @@ function cargarMazoInicial(mazo){
 
 
 function comenzar_juego() {
-	
-    cargarMazoInicial(mazo_inicial);
-	
+
+	cargarMazoInicial(mazo_inicial);
+
 	// Barajar
 	barajar(mazo_inicial);
 
@@ -115,7 +115,7 @@ function comenzar_juego() {
 	set_contador(cont_receptor3, 0);
 	set_contador(cont_receptor4, 0);
 	set_contador(cont_movimientos, 0);
-	
+
 	// Arrancar el conteo de tiempo
 	arrancar_tiempo();
 
@@ -146,37 +146,37 @@ function comenzar_juego() {
 	a clearInterval en su caso.   
 */
 
-function arrancar_tiempo(){
+function arrancar_tiempo() {
 	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
 	if (temporizador) clearInterval(temporizador);
-    let hms = function (){
-			let seg = Math.trunc( segundos % 60 );
-			let min = Math.trunc( (segundos % 3600) / 60 );
-			let hor = Math.trunc( (segundos % 86400) / 3600 );
-			let tiempo = ( (hor<10)? "0"+hor : ""+hor ) 
-						+ ":" + ( (min<10)? "0"+min : ""+min )  
-						+ ":" + ( (seg<10)? "0"+seg : ""+seg );
-			set_contador(cont_tiempo, tiempo);
-            segundos++;
-		}
+	let hms = function () {
+		let seg = Math.trunc(segundos % 60);
+		let min = Math.trunc((segundos % 3600) / 60);
+		let hor = Math.trunc((segundos % 86400) / 3600);
+		let tiempo = ((hor < 10) ? "0" + hor : "" + hor)
+			+ ":" + ((min < 10) ? "0" + min : "" + min)
+			+ ":" + ((seg < 10) ? "0" + seg : "" + seg);
+		set_contador(cont_tiempo, tiempo);
+		segundos++;
+	}
 	segundos = 0;
-    hms(); // Primera visualización 00:00:00
+	hms(); // Primera visualización 00:00:00
 	temporizador = setInterval(hms, 1000);
-    	
+
 }
 
 function barajar(mazo) {
-	mazo.forEach((baraja, i)=>{
-		let j = Math.floor( Math.random() * mazo.length);
-		mazo[i]=mazo[j];
-		mazo[j]=baraja;
+	mazo.forEach((baraja, i) => {
+		let j = Math.floor(Math.random() * mazo.length);
+		mazo[i] = mazo[j];
+		mazo[j] = baraja;
 	});
 }
 
 
 
 /**
- 	En el elemento HTML que representa el tapete inicial (variable tapete_inicial)
+	  En el elemento HTML que representa el tapete inicial (variable tapete_inicial)
 	se deben añadir como hijos todos los elementos <img> del array mazo.
 	Antes de añadirlos, se deberían fijar propiedades como la anchura, la posición,
 	coordenadas top y left, algun atributo de tipo data-...
@@ -185,40 +185,118 @@ function barajar(mazo) {
 function cargar_tapete_inicial(mazo) {
 	let gap = 4;
 	let altoContenedorInicial = window.getComputedStyle(tapete_inicial).height.replace(/\D/g, "");;
-	let altoBaraja = `${altoContenedorInicial-(mazo.length*gap)}px`;
+	let altoBaraja = `${altoContenedorInicial - (mazo.length * gap)}px`;
 
 	mazo.forEach((baraja, index) => {
 		let nombre_baraja = `${baraja.numero}-${baraja.figura}`;
 		let img = document.createElement("img");
 		img.classList.add("baraja");
 		img.classList.add("inicial");
+		img.classList.add("draggable");
 		img.id = nombre_baraja;
-		img.setAttribute("src",`./imagenes/baraja/${baraja.numero}-${baraja.figura}.png`);
+		img.setAttribute("src", `./imagenes/baraja/${baraja.numero}-${baraja.figura}.png`);
 		img.setAttribute("data-figura", baraja.figura);
 		img.setAttribute("data-numero", baraja.numero);
 		img.setAttribute("data-color", baraja.color);
 		img.setAttribute("alt", nombre_baraja);
-		img.style.left= `${index*gap}px`;
-		img.style.top= `${index*gap}px`;
-		img.style.height=altoBaraja;
+		img.style.left = `${index * gap}px`;
+		img.style.top = `${index * gap}px`;
+		img.style.height = altoBaraja;
+		img.draggable = true;
+		img.addEventListener('dragstart', handleDragStart);
+		img.addEventListener('dragend', handleDragEnd);
+		img.addEventListener('ondrop', onDropBaraja);
+		img.addEventListener('ondragover', dragOverBaraja);
 		tapete_inicial.appendChild(img);
 	});
-} 
+
+}
+
+function dragOverBaraja(ev) {
+	ev.preventDefault();
+}
+
+function onDropBaraja(ev) {
+	ev.preventDefault();
+}
+
+
+
+function dragOverSobrantes(ev) {
+	ev.preventDefault();
+	ev.dataTransfer.dropEffect = "move";
+}
+
+function onDropSobrantes(ev) {
+	ev.preventDefault();
+	// Get the id of the target and add the moved element to the target's DOM
+	var data = ev.dataTransfer.getData("text");
+	var img = document.getElementById(data);
+	if (img.getAttribute("data-numero") != 12) {
+		moverASobrantes(img);
+	}
+}
+
+function moverASobrantes(img){
+	img.classList.add("colocada");
+	img.classList.remove("inicial")
+	tapete_sobrantes.appendChild(img);
+	inc_contador();
+}
+
+
+function dragOverReceptor(ev) {
+	ev.preventDefault();
+	ev.dataTransfer.dropEffect = "move";
+}
+
+function onDropReceptor(ev, receptor) {
+	ev.preventDefault();
+	// Get the id of the target and add the moved element to the target's DOM
+	var data = ev.dataTransfer.getData("text");
+	var img = document.getElementById(data);
+	var target = ev.target;
+	if (img.getAttribute("data-numero") == 12) {
+		moverAReceptor(img, receptor);
+	} else if ((img.getAttribute("data-numero") == target.getAttribute("data-numero")-1) && img.getAttribute("data-color") != target.getAttribute("data-color")) {
+		moverAReceptor(img, receptor);
+	}
+}
+
+function moverAReceptor(img, receptor){
+	img.classList.add("colocada");
+	img.classList.remove("inicial");
+	img.classList.remove("draggable");
+	receptor.appendChild(img);
+	inc_contador();
+}
+
+function handleDragStart(ev) {
+	this.style.opacity = '0';
+	ev.dataTransfer.setData("text", ev.target.id);
+	ev.dataTransfer.dropEffect = "move";
+}
+
+
+function handleDragEnd() {
+	this.style.opacity = '1';
+}
 
 
 /**
- 	Esta función debe incrementar el número correspondiente al contenido textual
-   	del elemento que actúa de contador
+	  Esta función debe incrementar el número correspondiente al contenido textual
+		  del elemento que actúa de contador
 */
-function inc_contador(contador){
-    contador.innerHTML = +contador.innerHTML + 1;
+function inc_contador() {
+	cont_movimientos.innerHTML = +cont_movimientos.innerHTML + 1;
 } // inc_contador
 
 /**
 	Idem que anterior, pero decrementando 
 */
-function dec_contador(contador){
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! ***/	
+function dec_contador() {
+	cont_movimientos.innerHTML = cont_movimientos.innerHTML - 1;
+	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! ***/
 } // dec_contador
 
 /**
