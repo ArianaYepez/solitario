@@ -119,35 +119,9 @@ function comenzar_juego() {
 	// Arrancar el conteo de tiempo
 	arrancar_tiempo();
 
-} // comenzar_juego
-
-
-/**
-	Se debe encargar de arrancar el temporizador: cada 1000 ms se
-	debe ejecutar una función que a partir de la cuenta autoincrementada
-	de los segundos (segundos totales) visualice el tiempo oportunamente con el 
-	format hh:mm:ss en el contador adecuado.
-
-	Para descomponer los segundos en horas, minutos y segundos pueden emplearse
-	las siguientes igualdades:
-
-	segundos = truncar (   segundos_totales % (60)                 )
-	minutos  = truncar ( ( segundos_totales % (60*60) )     / 60   )
-	horas    = truncar ( ( segundos_totales % (60*60*24)) ) / 3600 )
-
-	donde % denota la operación módulo (resto de la división entre los operadores)
-
-	Así, por ejemplo, si la cuenta de segundos totales es de 134 s, entonces será:
-	   00:02:14
-
-	Como existe la posibilidad de "resetear" el juego en cualquier momento, hay que 
-	evitar que exista más de un temporizador simultáneo, por lo que debería guardarse
-	el resultado de la llamada a setInterval en alguna variable para llamar oportunamente
-	a clearInterval en su caso.   
-*/
+} 
 
 function arrancar_tiempo() {
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! **/
 	if (temporizador) clearInterval(temporizador);
 	let hms = function () {
 		let seg = Math.trunc(segundos % 60);
@@ -160,7 +134,7 @@ function arrancar_tiempo() {
 		segundos++;
 	}
 	segundos = 0;
-	hms(); // Primera visualización 00:00:00
+	hms();
 	temporizador = setInterval(hms, 1000);
 
 }
@@ -173,15 +147,6 @@ function barajar(mazo) {
 	});
 }
 
-
-
-/**
-	  En el elemento HTML que representa el tapete inicial (variable tapete_inicial)
-	se deben añadir como hijos todos los elementos <img> del array mazo.
-	Antes de añadirlos, se deberían fijar propiedades como la anchura, la posición,
-	coordenadas top y left, algun atributo de tipo data-...
-	Al final se debe ajustar el contador de cartas a la cantidad oportuna
-*/
 function cargar_tapete_inicial(mazo) {
 	let gap = 4;
 	let altoContenedorInicial = window.getComputedStyle(tapete_inicial).height.replace(/\D/g, "");;
@@ -229,7 +194,6 @@ function dragOverSobrantes(ev) {
 
 function onDropSobrantes(ev) {
 	ev.preventDefault();
-	// Get the id of the target and add the moved element to the target's DOM
 	var data = ev.dataTransfer.getData("text");
 	var img = document.getElementById(data);
 	if (img.getAttribute("data-numero") != 12) {
@@ -252,7 +216,6 @@ function dragOverReceptor(ev) {
 
 function onDropReceptor(ev, receptor) {
 	ev.preventDefault();
-	// Get the id of the target and add the moved element to the target's DOM
 	var data = ev.dataTransfer.getData("text");
 	var img = document.getElementById(data);
 	var target = ev.target;
@@ -283,26 +246,14 @@ function handleDragEnd() {
 }
 
 
-/**
-	  Esta función debe incrementar el número correspondiente al contenido textual
-		  del elemento que actúa de contador
-*/
 function inc_contador() {
 	cont_movimientos.innerHTML = +cont_movimientos.innerHTML + 1;
-} // inc_contador
+} 
 
-/**
-	Idem que anterior, pero decrementando 
-*/
 function dec_contador() {
 	cont_movimientos.innerHTML = cont_movimientos.innerHTML - 1;
-	/*** !!!!!!!!!!!!!!!!!!! CODIGO !!!!!!!!!!!!!!!!!!!! ***/
-} // dec_contador
+} 
 
-/**
-	Similar a las anteriores, pero ajustando la cuenta al
-	valor especificado
-*/
 function set_contador(contador, valor) {
 	contador.textContent = valor;
-} // set_contador
+} 
