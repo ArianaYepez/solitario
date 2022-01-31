@@ -110,7 +110,7 @@ img.baraja{
 	position: absolute;
 	left: 0;
 	height: 100%;
-	border-radius: 2rem;
+	border-radius: 1rem;
 }
 
 img.baraja.colocada{
@@ -122,13 +122,15 @@ img.baraja.colocada{
 	z-index: 1;
 }
 
-img.baraja.draggable{
+
+img.baraja.inicial:hover:last-child{
+	transform: scale(1.05);
+	box-shadow: 1px 1px 8px black;
 	cursor: move;
 }
 
-img.baraja.inicial:hover{
-	transform: scale(1.05);
-	box-shadow: 1px 1px 8px black;
+img.baraja.inicial:not(:last-child){
+	cursor: not-allowed;
 }
 
 .marcadores{
