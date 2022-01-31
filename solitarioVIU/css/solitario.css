@@ -38,8 +38,13 @@
 
 .contador {
 	position: absolute;
-	bottom: 0px;
+	bottom: 3px;
 	right: 3px;
+	font-size: large;
+}
+
+.alerta-final{
+	display: none;
 }
 
 
@@ -69,6 +74,7 @@ div.tapete{
 	border-radius: 1rem;
 	border: 1px solid whitesmoke;
 	margin: 10px;
+	z-index: 2;
 }
 
 /* Dimensiones y color de fondo para el tapete inicial */
@@ -81,7 +87,7 @@ div.tapete#inicial{
 /* Dimensiones para todos los tapetes salvo el inicial */
 div.tapete:not(#inicial){				
 	height: 125px;
-	width: 100px;
+	width: 125px;
 }
 
 /* Color de fondo para el tapete de las cartas sobrantes */
@@ -107,9 +113,21 @@ img.baraja{
 	border-radius: 2rem;
 }
 
-img.baraja:hover{
+img.baraja.colocada{
+	left: 0 !important;
+	top: 0 !important;
+	height: 100% !important;
+	border-radius: 1rem;
+	cursor: not-allowed;
+	z-index: 1;
+}
+
+img.baraja.draggable{
+	cursor: move;
+}
+
+img.baraja.inicial:hover{
 	transform: scale(1.05);
-	cursor: pointer;
 	box-shadow: 1px 1px 8px black;
 }
 
