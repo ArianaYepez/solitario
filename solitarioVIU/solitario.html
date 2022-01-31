@@ -22,6 +22,10 @@
         </h1>
         <h4>Máster en Desarrollo de Aplicaciones y Servicios Web</h4>
         <h4>Realizado por: Ariana Yepez e Isaac Pilatuña</h4>
+        <div id="alerta" class="alert alert-success alerta-final" role="alert">
+          <h4 class="alert-heading">Buen trabajo!</h4>
+          <span id='mensaje-final'></span>
+        </div>
       </div>
       <div class="card-body">
         <h2 id="marcadores" class="marcadores">
@@ -39,23 +43,23 @@
             <div id="inicial" class="tapete">
               <span id="contador_inicial" class="contador"></span>
             </div>
-            <div id="sobrantes" class="tapete" ondrop="onDropSobrantes(event)" ondragover="dragOverSobrantes(event)">
+            <div id="sobrantes" class="tapete" ondrop="onDropSobrantes(event, contador_sobrantes)" ondragover="dragOverSobrantes(event)">
               <span id="contador_sobrantes" class="contador"></span>
             </div>
           </div>
-          <div id="receptor1" class="tapete receptor" ondrop="onDropReceptor(event, receptor1)"
+          <div id="receptor1" class="tapete receptor" ondrop="onDropReceptor(event, receptor1, contador_receptor1)"
             ondragover="dragOverReceptor(event)">
             <span id="contador_receptor1" class="contador"></span>
           </div>
-          <div id="receptor2" class="tapete receptor" ondrop="onDropReceptor(event, receptor2)"
+          <div id="receptor2" class="tapete receptor" ondrop="onDropReceptor(event, receptor2, contador_receptor2)"
             ondragover="dragOverReceptor(event)">
             <span id="contador_receptor2" class="contador"></span>
           </div>
-          <div id="receptor3" class="tapete receptor" ondrop="onDropReceptor(event, receptor3)"
+          <div id="receptor3" class="tapete receptor" ondrop="onDropReceptor(event, receptor3, contador_receptor3)"
             ondragover="dragOverReceptor(event)">
             <span id="contador_receptor3" class="contador"></span>
           </div>
-          <div id="receptor4" class="tapete receptor" ondrop="onDropReceptor(event, receptor4)"
+          <div id="receptor4" class="tapete receptor" ondrop="onDropReceptor(event, receptor4, contador_receptor4)"
             ondragover="dragOverReceptor(event)">
             <span id="contador_receptor4" class="contador"></span>
           </div>

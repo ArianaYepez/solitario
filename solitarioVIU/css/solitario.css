@@ -38,8 +38,13 @@
 
 .contador {
 	position: absolute;
-	bottom: 0px;
+	bottom: 3px;
 	right: 3px;
+	font-size: large;
+}
+
+.alerta-final{
+	display: none;
 }
 
 
@@ -82,7 +87,7 @@ div.tapete#inicial{
 /* Dimensiones para todos los tapetes salvo el inicial */
 div.tapete:not(#inicial){				
 	height: 125px;
-	width: 100px;
+	width: 125px;
 }
 
 /* Color de fondo para el tapete de las cartas sobrantes */

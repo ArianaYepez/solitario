@@ -109,6 +109,7 @@ function comenzar_juego() {
 	cargar_tapete_inicial(mazo_inicial);
 
 	// Puesta a cero de contadores de mazos
+	set_contador(cont_inicial, mazo_inicial.length);
 	set_contador(cont_sobrantes, 0);
 	set_contador(cont_receptor1, 0);
 	set_contador(cont_receptor2, 0);
@@ -121,13 +122,15 @@ function comenzar_juego() {
 
 } 
 
+tiempo="";
+
 function arrancar_tiempo() {
 	if (temporizador) clearInterval(temporizador);
 	let hms = function () {
 		let seg = Math.trunc(segundos % 60);
 		let min = Math.trunc((segundos % 3600) / 60);
 		let hor = Math.trunc((segundos % 86400) / 3600);
-		let tiempo = ((hor < 10) ? "0" + hor : "" + hor)
+		tiempo = ((hor < 10) ? "0" + hor : "" + hor)
 			+ ":" + ((min < 10) ? "0" + min : "" + min)
 			+ ":" + ((seg < 10) ? "0" + seg : "" + seg);
 		set_contador(cont_tiempo, tiempo);
@@ -192,20 +195,22 @@ function dragOverSobrantes(ev) {
 	ev.dataTransfer.dropEffect = "move";
 }
 
-function onDropSobrantes(ev) {
+function onDropSobrantes(ev, contador) {
 	ev.preventDefault();
 	var data = ev.dataTransfer.getData("text");
 	var img = document.getElementById(data);
 	if (img.getAttribute("data-numero") != 12) {
-		moverASobrantes(img);
+		moverASobrantes(img, contador);
 	}
 }
 
-function moverASobrantes(img){
+function moverASobrantes(img, contador){
 	img.classList.add("colocada");
 	img.classList.remove("inicial")
 	tapete_sobrantes.appendChild(img);
-	inc_contador();
+	inc_contador(contador);
+	dec_contador(cont_inicial);
+	comprobarRebarajeoDeSobrantes();
 }
 
 
@@ -214,24 +219,28 @@ function dragOverReceptor(ev) {
 	ev.dataTransfer.dropEffect = "move";
 }
 
-function onDropReceptor(ev, receptor) {
+function onDropReceptor(ev, receptor, contador) {
 	ev.preventDefault();
 	var data = ev.dataTransfer.getData("text");
 	var img = document.getElementById(data);
 	var target = ev.target;
 	if (img.getAttribute("data-numero") == 12) {
-		moverAReceptor(img, receptor);
+		moverAReceptor(img, receptor, contador);
 	} else if ((img.getAttribute("data-numero") == target.getAttribute("data-numero")-1) && img.getAttribute("data-color") != target.getAttribute("data-color")) {
-		moverAReceptor(img, receptor);
+		moverAReceptor(img, receptor, contador);
 	}
 }
 
-function moverAReceptor(img, receptor){
+function moverAReceptor(img, receptor, contador){
 	img.classList.add("colocada");
 	img.classList.remove("inicial");
 	img.classList.remove("draggable");
 	receptor.appendChild(img);
-	inc_contador();
+	inc_contador(contador);
+	set_contador(cont_inicial,tapete_inicial.childElementCount-1);
+	set_contador(cont_sobrantes,tapete_sobrantes.childElementCount-1);
+	comprobarRebarajeoDeSobrantes();
+	comprobarFinDelJuego();
 }
 
 function handleDragStart(ev) {
@@ -246,14 +255,49 @@ function handleDragEnd() {
 }
 
 
-function inc_contador() {
+function inc_contador(contador=null) {
 	cont_movimientos.innerHTML = +cont_movimientos.innerHTML + 1;
+	if(contador){
+		contador.innerHTML = +contador.innerHTML + 1;
+	}
 } 
 
-function dec_contador() {
-	cont_movimientos.innerHTML = cont_movimientos.innerHTML - 1;
+function dec_contador(contador) {
+	contador.innerHTML = contador.innerHTML - 1;
 } 
 
 function set_contador(contador, valor) {
 	contador.textContent = valor;
 } 
+
+function comprobarRebarajeoDeSobrantes(){
+	if(cont_inicial.innerHTML==0 && cont_sobrantes.innerHTML!=0){
+		let children = tapete_sobrantes.querySelectorAll(".baraja");
+		console.log(children)
+		children.forEach(child => {
+			moverAInicial(child);
+		});
+	}
+}
+
+function moverAInicial(img){
+	img.classList.remove("colocada");
+	img.classList.add("inicial");
+	img.classList.add("draggable");
+	tapete_inicial.appendChild(img);
+	set_contador(cont_inicial,tapete_inicial.childElementCount-1);
+	set_contador(cont_sobrantes,tapete_sobrantes.childElementCount-1);
+
+}
+
+function comprobarFinDelJuego(){
+	if(cont_inicial.innerHTML==0 && cont_sobrantes.innerHTML==0){
+		let alerta = document.getElementById("alerta");
+		let mensaje = document.getElementById("mensaje-final");
+		mensaje.innerText = `Felicitaciones, ha terminado el juego en ${tiempo} con ${cont_movimientos.innerHTML} movimientos`;
+		alerta.classList.remove("alerta-final");
+		clearInterval(temporizador);
+		
+	}
+
+}
